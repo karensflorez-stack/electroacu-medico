@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { supabase } from "./supabase";
 
 const C = {
   bg: "#F2F5F9", surface: "#FFFFFF",
@@ -49,12 +50,18 @@ const DEMO_SESSIONS = [
   { id: 3, date: "2026-06-24", time: "21:15", mano: "Derecha", puntos_usados: ["PC7","PC6","IG4","TR5","P7"], frecuencia_hz: 4, intensidad_ma: 4, duracion_min: 25, dolor_eva_antes: 4, dolor_eva_despues: 2, sintomas_antes: ["dolor_muneca"], sintomas_despues: [], efecto_adverso: "Ninguno", notas: "Muy buena sesión. Casi sin síntomas.", paciente: "Ana Gómez" },
 ];
 
-function loadSessions() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const stored = raw ? JSON.parse(raw) : [];
-    return stored.length > 0 ? stored : DEMO_SESSIONS;
-  } catch { return DEMO_SESSIONS; }
+async function loadSessions() {
+  const { data, error } = await supabase
+    .from("sesiones")
+    .select("*")
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    return [];
+  }
+
+  return data || [];
 }
 
 function Card({ children, style = {} }) {
@@ -150,19 +157,26 @@ function LoginScreen({ onLogin }) {
 
 // ─── DASHBOARD MÉDICO ─────────────────────────────────────────────────────────
 function Dashboard({ onLogout }) {
-  const [sessions, setSessions] = useState(loadSessions);
+  const [sessions, setSessions] = useState([]);
   const [tab, setTab] = useState("resumen");
   const [aiSummary, setAiSummary] = useState("");
   const [loadingAI, setLoadingAI] = useState(false);
 
   // Recargar sesiones del localStorage cada vez que se monta
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const fresh = loadSessions();
-      setSessions(fresh);
-    }, 10000); // refresca cada 10s
-    return () => clearInterval(interval);
-  }, []);
+useEffect(() => {
+
+  const fetchSessions = async () => {
+    const data = await loadSessions();
+    setSessions(data);
+  };
+
+  fetchSessions();
+
+  const interval = setInterval(fetchSessions, 5000);
+
+  return () => clearInterval(interval);
+
+}, []);
 
   const ss = sessions;
   const avgAntes   = ss.reduce((a, s) => a + s.dolor_eva_antes, 0) / Math.max(ss.length, 1);
@@ -180,7 +194,7 @@ function Dashboard({ onLogout }) {
     setAiSummary("");
     try {
       const dataStr = ss.map(s =>
-        `Sesión ${s.date} ${s.time}: Mano ${s.mano}, Puntos: ${s.puntos_usados.join(", ")}, ` +
+        `Sesión ${s.fecha} ${s.time}: Mano ${s.mano}, Puntos: ${s.puntos_usados.join(", ")}, ` +
         `${s.frecuencia_hz}Hz/${s.intensidad_ma}mA/${s.duracion_min}min, ` +
         `EVA antes: ${s.dolor_eva_antes} → después: ${s.dolor_eva_despues}, ` +
         `Síntomas previos: [${(s.sintomas_antes||[]).join(", ")}], ` +
@@ -270,7 +284,7 @@ ${dataStr}`;
             {ss.map((s, i) => (
               <div key={s.id} style={{ marginBottom: 14 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                  <span style={{ fontSize: 12, color: C.textMuted }}>Sesión {i + 1} · {s.date}</span>
+                  <span style={{ fontSize: 12, color: C.textMuted }}>Sesión {i + 1} · {s.fecha}</span>
                   <span style={{ fontSize: 12, fontWeight: 700, color: s.dolor_eva_antes - s.dolor_eva_despues > 0 ? C.green : C.danger }}>
                     {s.dolor_eva_antes - s.dolor_eva_despues > 0 ? "↓" : "↑"} {Math.abs(s.dolor_eva_antes - s.dolor_eva_despues)} EVA
                   </span>
@@ -332,7 +346,7 @@ ${dataStr}`;
               <Card key={s.id} style={{ borderLeft: `4px solid ${s.dolor_eva_antes - s.dolor_eva_despues >= 2 ? C.green : C.warn}` }}>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
                   <div>
-                    <span style={{ fontWeight: 700, color: C.text, fontSize: 14 }}>{s.date} · {s.time}</span>
+                    <span style={{ fontWeight: 700, color: C.text, fontSize: 14 }}>{s.fecha} · {s.time}</span>
                     <span style={{ fontSize: 12, color: C.textMuted, marginLeft: 8 }}>Mano {s.mano}</span>
                   </div>
                   <div style={{ display: "flex", gap: 6, alignItems: "center" }}>

@@ -26,10 +26,6 @@ const PUNTOS_QI = [
     accion: "Punto analgésico maestro · Mueve el Qi de la mano y muñeca · Antiinflamatorio" },
   { codigo: "TR5", nombre: "Waiguan", meridiano: "Triple Recalentador", color: "#C09A1A", emoji: "🟡",
     accion: "Punto comando dolor de muñeca y dedos · Abre Yang Wei Mai · Par de PC6" },
-  { codigo: "P7", nombre: "Lieque", meridiano: "Pulmón", color: "#C05A1A", emoji: "🟠",
-    accion: "Abre Ren Mai · Nutre el Yin del pulmón · Trata neuropatías del pulgar e índice" },
-  { codigo: "MC9", nombre: "Zhongchong", meridiano: "Pericardio", color: "#7B2FBE", emoji: "🔵",
-    accion: "Punto Jing-Pozo · Activa la circulación local en los dedos · Revive el Shen" },
 ];
 
 const SINTOMAS_STC = [
@@ -323,21 +319,6 @@ ${dataStr}`;
             </Card>
           )}
 
-          <Card style={{ borderLeft: `4px solid ${C.meridian}` }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-              <SectionTitle icon="🤖">Análisis clínico IA</SectionTitle>
-              <button onClick={generateAI} disabled={loadingAI} style={{
-                background: loadingAI ? C.border : C.primary, color: loadingAI ? C.textMuted : "#fff",
-                border: "none", borderRadius: 8, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: loadingAI ? "not-allowed" : "pointer"
-              }}>
-                {loadingAI ? "Analizando…" : "Generar"}
-              </button>
-            </div>
-            {aiSummary
-              ? <p style={{ margin: 0, lineHeight: 1.75, fontSize: 13, color: C.text, whiteSpace: "pre-wrap" }}>{aiSummary}</p>
-              : <p style={{ margin: 0, color: C.textMuted, fontSize: 13, fontStyle: "italic" }}>Genera un análisis integrado: evolución EVA, síntomas residuales, tolerancia y ajuste de protocolo.</p>
-            }
-          </Card>
         </>}
 
         {tab === "sesiones" && (

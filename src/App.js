@@ -22,9 +22,9 @@ const PUNTOS_QI = [
     accion: "Punto principal STC · Desbloquea el meridiano en la muñeca · Calma el Shen" },
   { codigo: "PC6", nombre: "Neiguan", meridiano: "Pericardio", color: "#7B2FBE", emoji: "🔵",
     accion: "Abre el Yin Wei Mai · Mueve el Qi y Xue · Alivia dolor irradiado al antebrazo" },
-  { codigo: "IG4", nombre: "Hegu", meridiano: "Intestino Grueso", color: "#1A7A4A", emoji: "🟢",
+  { codigo: "LI4", nombre: "Hegu", meridiano: "Intestino Grueso", color: "#1A7A4A", emoji: "🟢",
     accion: "Punto analgésico maestro · Mueve el Qi de la mano y muñeca · Antiinflamatorio" },
-  { codigo: "TR5", nombre: "Waiguan", meridiano: "Triple Recalentador", color: "#C09A1A", emoji: "🟡",
+  { codigo: "TE5", nombre: "Waiguan", meridiano: "Triple Recalentador", color: "#C09A1A", emoji: "🟡",
     accion: "Punto comando dolor de muñeca y dedos · Abre Yang Wei Mai · Par de PC6" },
 ];
 
@@ -41,9 +41,9 @@ const SINTOMAS_STC = [
 
 // Datos demo para cuando no hay datos del paciente aún
 const DEMO_SESSIONS = [
-  { id: 1, date: "2026-06-18", time: "21:00", mano: "Derecha", puntos_usados: ["PC7","PC6","IG4"], frecuencia_hz: 2, intensidad_ma: 3, duracion_min: 20, dolor_eva_antes: 6, dolor_eva_despues: 4, sintomas_antes: ["parestesia_nocturna","adormecimiento_dedos"], sintomas_despues: ["adormecimiento_dedos"], efecto_adverso: "Ninguno", notas: "Primera sesión. Dormí mejor esa noche.", paciente: "Ana Gómez" },
-  { id: 2, date: "2026-06-21", time: "20:30", mano: "Derecha", puntos_usados: ["PC7","PC6","IG4","TR5"], frecuencia_hz: 2, intensidad_ma: 4, duracion_min: 20, dolor_eva_antes: 5, dolor_eva_despues: 3, sintomas_antes: ["adormecimiento_dedos","dolor_muneca"], sintomas_despues: [], efecto_adverso: "Eritema leve bajo electrodo", notas: "Aumenté la intensidad.", paciente: "Ana Gómez" },
-  { id: 3, date: "2026-06-24", time: "21:15", mano: "Derecha", puntos_usados: ["PC7","PC6","IG4","TR5","P7"], frecuencia_hz: 4, intensidad_ma: 4, duracion_min: 25, dolor_eva_antes: 4, dolor_eva_despues: 2, sintomas_antes: ["dolor_muneca"], sintomas_despues: [], efecto_adverso: "Ninguno", notas: "Muy buena sesión. Casi sin síntomas.", paciente: "Ana Gómez" },
+  { id: 1, date: "2026-06-18", time: "21:00", mano: "Derecha", puntos_usados: ["PC7","PC6","LI4"], frecuencia_hz: 2, intensidad_ma: 3, duracion_min: 20, dolor_eva_antes: 6, dolor_eva_despues: 4, sintomas_antes: ["parestesia_nocturna","adormecimiento_dedos"], sintomas_despues: ["adormecimiento_dedos"], efecto_adverso: "Ninguno", notas: "Primera sesión. Dormí mejor esa noche.", paciente: "Ana Gómez" },
+  { id: 2, date: "2026-06-21", time: "20:30", mano: "Derecha", puntos_usados: ["PC7","PC6","LI4","TE5"], frecuencia_hz: 2, intensidad_ma: 4, duracion_min: 20, dolor_eva_antes: 5, dolor_eva_despues: 3, sintomas_antes: ["adormecimiento_dedos","dolor_muneca"], sintomas_despues: [], efecto_adverso: "Eritema leve bajo electrodo", notas: "Aumenté la intensidad.", paciente: "Ana Gómez" },
+  { id: 3, date: "2026-06-24", time: "21:15", mano: "Derecha", puntos_usados: ["PC7","PC6","LI4","TE5","P7"], frecuencia_hz: 4, intensidad_ma: 4, duracion_min: 25, dolor_eva_antes: 4, dolor_eva_despues: 2, sintomas_antes: ["dolor_muneca"], sintomas_despues: [], efecto_adverso: "Ninguno", notas: "Muy buena sesión. Casi sin síntomas.", paciente: "Ana Gómez" },
 ];
 
 async function loadSessions() {
